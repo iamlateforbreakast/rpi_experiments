@@ -11,7 +11,7 @@ Copy the content of ~/.ssh/id_rsa.pub to Github settings.
 Test
 `ssh -T git@github.com`
 
-`git remote set-url origin git@github:iamlateforbreakast/rpi_experiments.git`
+`git remote set-url origin git@github.com:iamlateforbreakast/rpi_experiments.git`
 
 `git config pull.rebase false`
 
