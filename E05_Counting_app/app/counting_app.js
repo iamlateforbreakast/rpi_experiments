@@ -1,8 +1,15 @@
+// const app = require('express')();
+// const server = require('http').createServer(app);
+// const io = require('socket.io')(server);
+// const port = process.env.PORT || 8080;
 var http = require('http').createServer(handler) ;
 var io = require('socket.io').listen(http);
 var fs = require('fs');
 var counter; 
 
+// app.get('/', function(req, res) {
+//   res.sendfile('index.html');
+// });
 function SendHtmlDoc(resp){
    var myhtml = fs.readFileSync("/home/pi/app/CountingApp/index.html");
    resp.writeHead(200,{"Content-Type": "text/html"} );
@@ -30,7 +37,17 @@ function handler(req,resp) {
   }
 };
 
+// server.listen(port, function() {
+//   console.log(`Listening on port ${port}`);
+// });
 http.listen(8080);
+
+//io.on('connection', (socket) => {
+//  console.log('user connected');
+//  socket.on('disconnect', function () {
+//    console.log('user disconnected');
+//  });
+//})
 
 io.sockets.on('connection', function (socket) {
  
