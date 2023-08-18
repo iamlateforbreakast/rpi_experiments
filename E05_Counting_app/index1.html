@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <script src="raphael-min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            window.onload = function draw_something() {
+                var canvas = Raphael("raphael_canvas", 700, 400);
+                canvas.circle(200,50,40);
+                var attr = {
+                    fill: 'blue',
+                    stroke: '#000',
+                    'stroke-width': 5,
+                    cursor: 'pointer'
+                };
+                var socket = io.connect('raspberrypi');
+                socket.on('connect', function () {
+                    displayCounter(0);
+                    socket.on('counter', function (counter) {
+                        console.log(counter.val);
+                        displayCounter(counter.val);
+                    });
+                }
+                function displayCounter(counter) {
+                    var mymessage = canvas.text(50,10,counter);
+                    mymessage.attr({"font-family": "arial",fill:"black","font-size": 14 });
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <h1>Real Time Counter</h1>
+        <div id="raphael_canvas">
+        </div>
+    </body>
+</html>
