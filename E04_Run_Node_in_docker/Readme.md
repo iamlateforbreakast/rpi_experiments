@@ -17,6 +17,11 @@ Listing Docker images
 
 `docker images ls`
 
+Run container from image
+------------------------
+
+`docker run -p 8081:8080 -d my_image`
+
 Inspect logs
 ------------
 Get container id:
