@@ -49,4 +49,5 @@ Remove a stopped container
 
 Shell into container
 `docker run -d -i -t count_app /bin/sh`
+`docker exec -it <container_name> sh`
 
