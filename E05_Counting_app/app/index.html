@@ -12,7 +12,7 @@
                     'stroke-width': 5,
                     cursor: 'pointer'
                 };
-                var socket = io.connect('raspberrypi');
+                var socket = io();
                 socket.on('connect', function () {
                     displayCounter(0);
                     socket.on('counter', function (counter) {
