@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "A counting application",
   "author": "Tester",
-  "main": "counting_app.js",
+  "main": "app/counting_app.js",
   "scripts": {
-    "start": "node couting_app.js"
+    "start": "node app/couting_app.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "socket.io": "^2.1.1"
   }
 }
