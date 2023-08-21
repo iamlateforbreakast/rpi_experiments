@@ -1,0 +1,291 @@
+<!DOCTYPE html> 
+<html> 
+  <head>
+   <!--I have added an external stylesheet to try to simplify the index page-->
+   <link rel="stylesheet" type="text/css" href="mystylesheet.css"> 
+  	 <script src="raphael-min.js"></script>
+     <script src="/socket.io/socket.io.js"></script>
+     <title>My Home page</title>
+     <script type="text/javascript" charset="utf-8">
+       <!--Draw circle -->
+        var playing;
+        function checkplaybtn(){
+          console.log("check button");
+          var card = document.getElementById("mp3files");
+          console.log(card.selectedIndex);
+               
+         if (card.selectedIndex >0){
+  
+          //if (getElementById("mp3files").selectedIndex > 1){
+              alert("Yesssss");
+              playing = true;
+              document.getElementById("play").value = "stop";
+              return true;
+         }
+         else if (playing == true){
+              playing = false;
+              document.getElementById("play").value = "play";
+        }
+        else{
+              alert("Noes");
+              playing = false;
+              return false;
+        }
+        }
+        
+        function update_mp3_list(data, is_playing){
+            playing = is_playing;
+            if (is_playing == true){
+              document.getElementById("play").value = "stop";
+              document.getElementById("play").disabled = false;
+            }
+            
+            console.log('got to the socket on for listMp3');
+            //document.getElementById("myAudioFormDisp").innerHTML = '<textarea class"'="FormElement" name="myname" id="myname" cols="40" rows="4" value="' + data + '></textarea>
+            var nbFiles = data.length;
+            data.forEach(function (file) {
+                 var opt = document.createElement("OPTION");
+                 opt.text = file;
+                 opt.value = file;
+                 var doc = document.getElementById("mp3files");
+                 console.log("list of MP3 files" + doc);
+                 doc.options.add(opt);
+                 console.log(file);
+            });
+            if((nbFiles > 0)&&(is_playing==false)){
+              document.getElementById("play").disabled = false;
+	        }
+           };
+    
+        window.onload = function draw_something() {
+           playing = false;
+           var canvas = Raphael("raphael_canvas", 700, 400);
+        //   canvas.circle(200,50,40);
+           var attr = {
+             fill: 'blue',
+             stroke: '#000',
+            'stroke-width': 5,
+             cursor: 'pointer'
+           };
+    	   var socket = io.connect('http://rhubarb:8080');
+           socket.emit("audiofile",{toto : 'getaudio'});
+           //Write some text to the webpage
+		   socket.on('news', function (data){
+            var mymessage = canvas.text(50,10,data.hello);
+			mymessage.attr({"font-family": "arial",fill:"black","font-size": 35 });
+            console.log(data);
+           });
+		   //display the photo
+		   socket.on('Photo taken', function (data){
+            canvas.text(30,40,data.Picfilename);
+            console.log(data);
+			document.getElementById("thephoto").innerHTML = '<img src="' + data.Picfilename + '" alt="taken from pi" height="420" width="420">';
+		   });
+		   //take a raspicam pic picture when the button is clicked
+           var button2 = document.getElementById('takepic');
+           button2.onclick = function () {
+             socket.emit("picture",{toto : 'snap'});
+           }; 
+           //Radio sensor data display
+            socket.on('radio', function (data){
+            //document.getElementById("temperature").innerHTML = '<textarea class="FormElement" name="myRadioFormDisp" id="myRadioFormDisp" cols="40" rows="4" value="'+data.temp+'></textarea>';
+		    canvas.clear();
+            var mymessage = canvas.text( 400,30,data.temp);
+            mymessage.attr({"font-family": "arial",fill:"black","font-size": 48 });
+            console.log(data.temp);
+           });
+           
+           //audio play mp3
+            socket.on('listMp3', function(data, is_playing){update_mp3_list(data, is_playing)});
+           
+           //get a list of MP3 files when clicked 
+            var button5 = document.getElementById('getaudiofiles');
+            button5.onclick = function () {
+                socket.emit("audiofile",{toto : 'getaudio'});
+                console.log("got to socket.emit for audio");
+              //  socket.emit("picture",{toto : 'snap'});
+
+           };
+                   
+           //Draw 3 Bezier shapes and use a button to fill 2 of them with a different colour
+           var elementSet = canvas.set();
+           var cn = {};
+           cn.a = canvas.path("M339.098,175.503c0,0-55.555,58.823-16.34,75.163s227.451,49.02,227.451,49.02s67.321-25.49,47.713-50.98s-71.896-78.432-71.896-78.432L339.098,175.503z").attr(attr);
+           cn.b = canvas.path("M548.902,306.876c0,0-209.15-32.026-228.758-46.405s-27.451-27.451-20.262-42.484s26.797-44.444,26.797-44.444l-41.83-86.928l-76.471,77.125c0,0-25.49,169.935,48.366,171.242s292.157-4.575,292.157-4.575V306.876z").attr(attr);
+           cn.c = canvas.path("M296.614,86.614l38.562,83.66l194.771-7.843l75.817,81.7c0,0,130.066-84.967,73.203-118.301S503.15,48.706,463.935,51.974S296.614,86.614,296.614,86.614z").attr(attr);
+           elementSet.push(cn.a, cn.b); //define what is in the set
+           //on pressing this button fill in part of it with black colour
+           var button = document.getElementById('show');
+           button.onclick = function () {
+             elementSet.animate({ fill: '#000'}, 500);
+           };
+           //toggle button text for mp3 player
+           //var buttonplay = document.getElementById('selectaction');
+           //if (buttonplay.firstChild.data == "Play") 
+            //    {
+            //        buttonplay.firstChild.data = "Stop";
+            //    }
+            //    else 
+            //    {
+            //        buttonplay.firstChild.data = "Play";
+            //    }
+           // }
+           
+           
+           //draw a picture display pic in small box.
+           //var c = document.getElementById("myCanvas");
+           //var ctx = c.getContext("2d");
+		   //var img = document.getElementById("scream");
+           //ctx.drawImage(img,10,10);       
+
+	   };
+     
+     </script>
+
+  </head>
+  <body> 
+    <!-- Panel layout for screen-->
+	<div id="navigation1">
+		<ul>
+			<p style="color:#000;font-size:12px;font-weight:normal;text-align:left;font-family:Arial">
+			<li><a href="index.html">Home</a></li>
+			<li><a href="Pilite.html">Pilite Display</a></li>
+			<li><a href="Radio.html">Radio Sensors</a></li>
+			<li><a href="Picam.html">Raspberry PiCam</a></li>
+			<li><a href="MotorControl.html">Motor Control</a></li>
+			<li><a href="Drawing.html">Graphic Control</a></li>
+			<li><a href="DataEntry.html">DataEntry Control</a></li>
+			<li><a href="mp3player.html">Mp3Player Control</a></li>
+		</ul>
+	</div>
+	<div id="navigation2">
+		<ul>
+			<li><a href="">Documents</a></li>
+			<li><a href="">Community</a></li>
+			<li><a href="">References</a></li>
+			<li><a href="">Presentations</a></li>
+		</ul>
+	</div>
+	<div id="content">
+	   <!--Just some colouring of fonts to jazz up the screen a bit-->
+       <h1> Space Pi Mission Control</h1>
+       <p style="color:#000000;font-size:14px;font-weight:normal;text-align:left;font-family:Arial">Welcome to the User Interface to 
+  control "Rhubarb" and "Custard" our RaspberryPi computers </p>
+       <hr />
+       <p style="color:#454545;font-size:12px;font-weight:normal;font-style:italic;text-align:left;font-family:Arial">Latest Updates</p>
+       <p style="color:#000;font-size:12px;font-weight:normal;text-align:left;font-family:Arial">
+       <strong>March 01, 2014:</strong> Added PiLite,ssh capability to control pi from PC </p>
+       <p style="color:#000;font-size:12px;font-weight:normal;text-align:left;font-family:Arial">
+       <strong>March 07, 2014:</strong> Added Pi Motor Controller Board <em>Motor Controller</em></p>
+       <p style="color:#000;font-size:12px;font-weight:normal;text-align:left;font-family:Arial">
+       <strong>March 25, 2014:</strong> Added PiCam using nodejs server, and samba to copy files,raphael libraries to draw shapes </p>
+     <!--display container for text-->
+       <div style="color:#0000FF;font-family:Arial">
+         <h3>Test Screen to Control Pi</h3>
+       </div>
+       <!--display photograph-->
+	   <div id="thephoto" style="color:#0000FF">
+         <img id="scream" src="nodejs_photo1.jpg" alt="taken from pi" height="420" width="420">
+         <p style="color:#000;font-size:14px;font-weight:normal;text-align:left;font-family:Arial Black">
+         <strong>Take a Picture with the PiCam </strong>    	
+	   </div>
+      <!--take photograph-->    
+	   <div id = "mybutton2">
+         <button id="takepic">TakePic</button>
+       </div>   
+       <!--Display Audio data-->
+       <p style="color:#000;font-size:14px;font-weight:normal;text-align:left;font-family:Arial Black">
+       <strong>Get a List of MP3 Files -- </strong>    	
+       <div id = "mybutton5">
+         <button id="getaudiofiles">GetAudio</button>
+       </div> 
+	   <form name="myAudioFormDisp" action="selectaction" method="get" onsubmit="return checkplaybtn()">
+        <table>
+            <tr> 
+                <td>
+                    <select multiple="multiple" name="mp3files" id="mp3files">
+                        <option  value="List Of MP3 Files">List Of MP3 Files</option>
+                    </select>
+                </td>
+                <td>
+                   <!-- <button type="button" disabled>Click Me!</button>--> 
+                    <input type="submit" name="submit" id="play" value="Play" disabled />
+                    <!--<input type="submit" name="submit" id="submit" value="Play" />-->
+                </td>
+            </tr>
+        </table>
+        </form>
+        
+      <!--enter some data and display it on another page-->
+	   <p style="color:#000;font-size:14px;font-weight:normal;text-align:left;font-family:Arial Black">
+       <strong>Enter Your Text for PiLite Display </strong>    	
+	   <form name="myform" action="getData" method="get">
+       <textarea class="FormElement" name="myname" id="myname" cols="40" rows="4" value="Enter your name here!"></textarea>
+       <p>
+         <label>
+            <input type="submit" name="submit" id="submit" value="Submit" />
+         </label>
+       </p>
+	 <!--display graphic button-->
+	   </form>
+	 <!-- start Motor button -->
+   	   <div id ="mybutton3">
+	   <p>    
+		 <p style="color:#000;font-size:14px;font-weight:normal;text-align:left;font-family:Arial Black">
+         <strong>Start the motor on the Pi </strong> 
+         <p>
+		   <button id = "startmotor">StartMotor</button>
+	     </p>
+	   </p>
+	 </div>
+	 <div id = "mybutton">
+        <p style="color:#000;font-size:14px;font-weight:normal;text-align:left;font-family:Arial Black">
+        <strong>Fill in the Shape </strong> 
+		<p>
+    	 <button id ="show">Show</button>
+		 </p>
+     </div> 
+       <!--Control the radio sensors-->
+	   <p style="color:#000;font-size:14px;font-weight:normal;text-align:left;font-family:Arial Black">
+       <strong>Enter your text to query a LLDAP sensor ie aXXTEMP----- XX = sensor fill Max 12 chars with hyphens if short -- </strong>    	
+	   <form name="myRadioForm" action="RadioSensorData" method="get">
+       <textarea class="FormElement" name="myname" id="myname" cols="40" rows="4" value= RadioSensorData></textarea>
+       <p>
+         <label>
+            <input type="submit" name="submit" id="submit" value="Send" />
+         </label>
+       </p>
+       </form>
+       <!--Display sensor data-->
+       <p style="color:#000;font-size:14px;font-weight:normal;text-align:left;font-family:Arial Black">
+       <strong>Read Text from Radio sensors in LLDAP -- </strong>    	
+	   <form name="myRadioFormDisp" action="RadioSensorDatadisp" method="get">
+       <textarea class="FormElement" name="myname" id="myname" cols="40" rows="4" value="Enter your name here!"></textarea>
+       <p>
+         <label>
+            <input type="submit" name="submit" id="submit" value="Start" />
+         </label>
+       </p>
+       </form> 
+
+       <a href="mp3player.html">
+          <img src="camera.png" alt="mp3player" style="width:100px;height:50px;border:0;">
+       </a>
+	   
+	   <a href="radio.html">
+          <img src="radio.png" alt="radio" style="width:100px;height:50px;border:0;">
+       </a>
+	   <a href="mp3player.html">
+          <img src="mp3.png" alt="mp3" style="width:100px;height:50px;border:0;">
+       </a>
+  
+	 <!--display some graphics-->
+     <div id="raphael_canvas">
+     </div>
+	</div>
+   </div>
+  <!-- Panel end for screen-->
+   </body>
+</html>
+
+

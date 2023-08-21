@@ -1,0 +1,14 @@
+{
+  "name": "couting.app",
+  "version": "1.0.0",
+  "description": "A counting application",
+  "author": "Tester",
+  "main": "src/livecam_app.js",
+  "scripts": {
+    "start": "node src/livecam_app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^2.1.1"
+  }
+}

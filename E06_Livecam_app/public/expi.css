@@ -1,0 +1,7 @@
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+body{margin:0}
+
+.expi-theme {color:#fff !important; background-color:#000000 !important}
+.expi-top {position:fixed;width:100%;z-index:1;top:0}
+.expi-bottom {bottom:0}
