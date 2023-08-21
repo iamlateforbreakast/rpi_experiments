@@ -1,4 +1,4 @@
-FROM arm32v7/node:latest
+FROM arm32v7/node:alpine
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
