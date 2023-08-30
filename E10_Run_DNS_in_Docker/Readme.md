@@ -4,6 +4,8 @@ Running a DNS on a raspberrypi would allow to use wwww.expi.dev as a domain name
 
 ![Network](images/network.svg)
 
+Originally taken from https://github.com/ArieLevs/Raspberry-WiFi-Repeater/blob/master/README.md
+
 ## Configuration access point
 
 `sudo apt-get install hostapd`
