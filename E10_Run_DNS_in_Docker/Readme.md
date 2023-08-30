@@ -15,12 +15,6 @@ And append
 country_code=US
 interface=wlan0
 
-## un-comment below line if setting up extended network (options 3)
-# bridge=br0
-
-## comment out below line if setting extended network (options 3)
-driver=nl80211
-
 ssid=[AP_SSID]
 hw_mode=g
 channel=6
@@ -38,4 +32,10 @@ rsn_pairwise=CCMP
 Execute `sudo vi /etc/default/hostapd` and replace line #DAEMON_CONF with
 ```text
 DAEMON_CONF="/etc/hostapd/hostapd.conf"
+```
+
+Start the service
+```shell
+sudo systemctl unmask hostapd
+sudo systemctl start hostapd
 ```
