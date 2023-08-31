@@ -4,7 +4,7 @@ This activity consists in installing the latest Raspbian distribution on a new S
 
 TBC
 
-![Installation Process](images/Installation_process.svg)
+![Installation Process](images/Installation_process.svg){:height="200px"}
 
 # Process
 
