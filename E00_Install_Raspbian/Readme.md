@@ -6,6 +6,8 @@ TBC
 
 ![Installation Process](images/Installation_process.svg){:height="200px"}
 
+<img src="images/Installation_process.svg" width=50% height=50%>
+
 # Process
 
 ## Download Raspbian image
