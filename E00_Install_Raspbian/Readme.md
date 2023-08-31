@@ -13,11 +13,20 @@ TBC
 ## Configure Wifi
 
 ## Disable piWiz
-``` shell sudo rm /run/media/user/rootfs/etc/xdg/autostart/piwiz.desktop```
+```shell
+sudo rm /run/media/user/rootfs/etc/xdg/autostart/piwiz.desktop
+```
 
-## Disable SSH password warning
-Disable the console warning: ```shell sudo rm /etc/profile.d/sshpwd.sh```
-Disable the GUI warning: ```shell sudo rm /etc/xdg/lxsession/LXDE-pi/sshpwd.sh```
+## Disable SSH password warning: 
+Disable the console warning: 
+```shell
+sudo rm /etc/profile.d/sshpwd.sh
+```
+
+Disable the GUI warning: 
+```shell
+sudo rm /etc/xdg/lxsession/LXDE-pi/sshpwd.sh
+```
 
 ## Update distribution
 
