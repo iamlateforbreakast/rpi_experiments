@@ -4,7 +4,7 @@ This activity consists in installing the latest Raspbian distribution on a new S
 
 TBC
 
-<img src="images/Installation_process.svg" width=50% height=50%>
+<img src="images/Installation_process.svg" width=80% height=80%>
 
 # Process
 
@@ -32,4 +32,6 @@ sudo rm /etc/xdg/lxsession/LXDE-pi/sshpwd.sh
 
 # Automation
 
-To 
+To run a script at startup, add a configuration script to /etc/rc.local
+
+bash -c '/home/pi/configure_pi.sh > /home/pi/configure_pi.log 2>&1' &
