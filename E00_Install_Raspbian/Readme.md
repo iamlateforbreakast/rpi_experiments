@@ -2,17 +2,19 @@ This activity consists in installing the latest Raspbian distribution on a new S
 
 # General Principle
 
-TBC
+The aim is to automate the process as much as possible since installing RaspiOS occurs rather a lot.
+Ideally I want to launch a command that download the latest RaspiOS and mounts this image. A script is copied to the image that will be executed the first time the Raspberry Pi is started that updates essential parameters.
 
 <img src="images/Installation_process.svg" width=80% height=80%>
 
-# Process
+# Process:
 
 ## Download Raspbian image
+see https://lindevs.com/mount-raspberry-pi-os-image-in-linux
 
-## Configure Wifi
+## Configure Wifi:
 
-## Disable piWiz
+## Disable piWiz:
 ```shell
 sudo rm /run/media/user/rootfs/etc/xdg/autostart/piwiz.desktop
 ```
